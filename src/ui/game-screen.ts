@@ -17,15 +17,7 @@ interface GameScreenOptions {
 const createHistoryItem = ({ guess, bulls, cows }: HistoryEntry): HTMLLIElement =>
   createElement('li', { text: `${guess} — bulls: ${bulls}, cows: ${cows}` });
 
-export const createGameScreen = ({
-  settings,
-  onWin,
-  onNewGame,
-}: GameScreenOptions): HTMLElement => {
-  const { length, base } = settings;
-  const isDigit = createDigitValidator(base);
-  let state = createGame(settings, generateSecret(length, base), Date.now());
-
+const createGuessInput = (length: number, isDigit: (char: string) => boolean): HTMLInputElement => {
   const input = createElement('input', {
     attributes: {
       type: 'text',
@@ -35,6 +27,28 @@ export const createGameScreen = ({
       'aria-label': 'Your guess',
     },
   });
+
+  input.addEventListener('input', () => {
+    input.value = [...input.value].filter(isDigit).join('');
+  });
+
+  return input;
+};
+
+const describeRejectedGuess = (guess: string, { length, base }: GameSettings): string =>
+  isValidGuess(guess, length, base)
+    ? 'You have already tried this guess'
+    : `Enter ${length} different digits`;
+
+export const createGameScreen = ({
+  settings,
+  onWin,
+  onNewGame,
+}: GameScreenOptions): HTMLElement => {
+  const { length, base } = settings;
+  let state = createGame(settings, generateSecret(length, base), Date.now());
+
+  const input = createGuessInput(length, createDigitValidator(base));
   const guessButton = createElement('button', {
     text: 'Check',
     attributes: { type: 'submit' },
@@ -57,9 +71,7 @@ export const createGameScreen = ({
     const next = applyGuess(state, input.value, Date.now());
 
     if (next === state) {
-      message.textContent = isValidGuess(input.value, length, base)
-        ? 'You have already tried this guess'
-        : `Enter ${length} different digits`;
+      message.textContent = describeRejectedGuess(input.value, settings);
       return;
     }
 
@@ -75,9 +87,6 @@ export const createGameScreen = ({
     }
   };
 
-  input.addEventListener('input', () => {
-    input.value = [...input.value].filter(isDigit).join('');
-  });
   newGameButton.addEventListener('click', onNewGame);
 
   const form = createElement('form', { className: 'form', children: [input, guessButton] });
