@@ -91,7 +91,10 @@ export const createGameScreen = ({
   return createElement('section', {
     className: 'screen',
     children: [
-      createElement('h1', { text: 'Быки и коровы' }),
+      createElement('header', {
+        className: 'screen-header',
+        children: [createElement('h1', { text: 'Быки и коровы' }), newGameButton],
+      }),
       createElement('p', {
         className: 'hint',
         text: `Основание: ${base}, длина секрета: ${length}`,
@@ -99,7 +102,6 @@ export const createGameScreen = ({
       form,
       message,
       history,
-      newGameButton,
     ],
   });
 };
