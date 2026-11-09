@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { afterEach, describe, it, expect, vi } from 'vitest';
 import { generateSecret } from './generate-secret.js';
 
 const createSequenceRandom = (values: readonly number[]): (() => number) => {
@@ -11,6 +11,10 @@ const ALWAYS_FIRST = (): number => 0;
 const ALWAYS_LAST = (): number => 0.999;
 
 describe('generateSecret', () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
   it('returns a secret of the requested length', () => {
     expect(generateSecret(4, 10, ALWAYS_FIRST)).toHaveLength(4);
     expect(generateSecret(6, 16, ALWAYS_LAST)).toHaveLength(6);
@@ -49,10 +53,10 @@ describe('generateSecret', () => {
     );
   });
 
-  it('falls back to Math.random and still returns unique digits', () => {
-    const secret = generateSecret(6, 16);
+  it('falls back to Math.random when no source is passed', () => {
+    const mathRandom = vi.spyOn(Math, 'random').mockReturnValue(0);
 
-    expect(secret).toMatch(/^[0-9a-f]{6}$/);
-    expect(new Set(secret).size).toBe(6);
+    expect(generateSecret(4, 10)).toBe('0123');
+    expect(mathRandom).toHaveBeenCalledTimes(4);
   });
 });
