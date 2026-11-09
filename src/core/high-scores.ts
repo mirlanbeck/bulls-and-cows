@@ -9,13 +9,22 @@ export interface HighScore {
 export const MAX_HIGH_SCORES = 10;
 
 export const createHighScore = (state: GameState): HighScore | null => {
-  throw new Error(`Not implemented: ${state.status}`);
+  if (state.status !== 'won' || state.finishedAt === null) {
+    return null;
+  }
+
+  return {
+    attempts: state.history.length,
+    timeMs: state.finishedAt - state.startedAt,
+    settings: state.settings,
+  };
 };
+
+const compareHighScores = (first: HighScore, second: HighScore): number =>
+  first.attempts - second.attempts || first.timeMs - second.timeMs;
 
 export const addHighScore = (
   scores: readonly HighScore[],
   score: HighScore,
   limit: number = MAX_HIGH_SCORES,
-): readonly HighScore[] => {
-  throw new Error(`Not implemented: ${scores.length}, ${score.attempts}, ${limit}`);
-};
+): readonly HighScore[] => [...scores, score].sort(compareHighScores).slice(0, limit);
