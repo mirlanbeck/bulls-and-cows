@@ -4,7 +4,8 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "build": "tsc"
     },
     "repository": {
         "type": "git",
@@ -18,5 +19,8 @@
     "bugs": {
         "url": "https://github.com/mirlanbeck/bulls-and-cows/issues"
     },
-    "homepage": "https://github.com/mirlanbeck/bulls-and-cows#readme"
+    "homepage": "https://github.com/mirlanbeck/bulls-and-cows#readme",
+    "devDependencies": {
+        "typescript": "^7.0.2"
+    }
 }
