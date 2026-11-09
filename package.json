@@ -1,0 +1,22 @@
+{
+    "name": "bulls-and-cows",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/mirlanbeck/bulls-and-cows.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "private": true,
+    "type": "module",
+    "bugs": {
+        "url": "https://github.com/mirlanbeck/bulls-and-cows/issues"
+    },
+    "homepage": "https://github.com/mirlanbeck/bulls-and-cows#readme"
+}
