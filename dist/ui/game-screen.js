@@ -5,42 +5,49 @@ import { createHighScore } from '../core/high-scores.js';
 import { isValidGuess } from '../core/is-valid-guess.js';
 import { createElement } from './create-element.js';
 import { formatTime } from './format-time.js';
-const createHistoryItem = ({ guess, bulls, cows }) => createElement('li', { text: `${guess} — быки: ${bulls}, коровы: ${cows}` });
-export const createGameScreen = ({ settings, onWin, onNewGame, }) => {
-    const { length, base } = settings;
-    const isDigit = createDigitValidator(base);
-    let state = createGame(settings, generateSecret(length, base), Date.now());
+const createHistoryItem = ({ guess, bulls, cows }) => createElement('li', { text: `${guess} — bulls: ${bulls}, cows: ${cows}` });
+const createGuessInput = (length, isDigit) => {
     const input = createElement('input', {
         attributes: {
             type: 'text',
             name: 'guess',
             maxlength: String(length),
             autocomplete: 'off',
-            'aria-label': 'Ваша догадка',
+            'aria-label': 'Your guess',
         },
     });
+    input.addEventListener('input', () => {
+        input.value = [...input.value].filter(isDigit).join('');
+    });
+    return input;
+};
+const describeRejectedGuess = (guess, { length, base }) => isValidGuess(guess, length, base)
+    ? 'You have already tried this guess'
+    : `Enter ${length} different digits`;
+export const createGameScreen = ({ settings, onWin, onNewGame, }) => {
+    const { length, base } = settings;
+    let state = createGame(settings, generateSecret(length, base), Date.now());
+    const input = createGuessInput(length, createDigitValidator(base));
     const guessButton = createElement('button', {
-        text: 'Проверить',
+        text: 'Check',
         attributes: { type: 'submit' },
     });
     const message = createElement('p', { className: 'hint', attributes: { role: 'status' } });
     const history = createElement('ol', { className: 'history' });
     const newGameButton = createElement('button', {
-        text: 'Новая игра',
+        text: 'New game',
         attributes: { type: 'button' },
     });
     const finishGame = (score) => {
         input.disabled = true;
         guessButton.disabled = true;
-        message.textContent = `Победа! Попыток: ${score.attempts}, время: ${formatTime(score.timeMs)}`;
+        message.textContent = `You won! Attempts: ${score.attempts}, time: ${formatTime(score.timeMs)}`;
         onWin(score);
     };
     const submitGuess = () => {
         const next = applyGuess(state, input.value, Date.now());
         if (next === state) {
-            message.textContent = isValidGuess(input.value, length, base)
-                ? 'Такая догадка уже была'
-                : `Нужно ввести ${length} разных цифр`;
+            message.textContent = describeRejectedGuess(input.value, settings);
             return;
         }
         state = next;
@@ -52,9 +59,6 @@ export const createGameScreen = ({ settings, onWin, onNewGame, }) => {
             finishGame(score);
         }
     };
-    input.addEventListener('input', () => {
-        input.value = [...input.value].filter(isDigit).join('');
-    });
     newGameButton.addEventListener('click', onNewGame);
     const form = createElement('form', { className: 'form', children: [input, guessButton] });
     form.addEventListener('submit', (event) => {
@@ -67,11 +71,11 @@ export const createGameScreen = ({ settings, onWin, onNewGame, }) => {
         children: [
             createElement('header', {
                 className: 'screen-header',
-                children: [createElement('h1', { text: 'Быки и коровы' }), newGameButton],
+                children: [createElement('h1', { text: 'Bulls and Cows' }), newGameButton],
             }),
             createElement('p', {
                 className: 'hint',
-                text: `Основание: ${base}, длина секрета: ${length}`,
+                text: `Base: ${base}, secret length: ${length}`,
             }),
             form,
             message,

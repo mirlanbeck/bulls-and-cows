@@ -2,10 +2,10 @@ import { countPossibleSecrets } from '../core/count-possible-secrets.js';
 import { getAvailableLengths } from '../core/game-options.js';
 import { createElement } from './create-element.js';
 const BASE_OPTIONS = [
-    { value: 2, label: 'Двоичная (bin)' },
-    { value: 8, label: 'Восьмеричная (oct)' },
-    { value: 10, label: 'Десятичная (dec)' },
-    { value: 16, label: 'Шестнадцатеричная (hex)' },
+    { value: 2, label: 'Binary (bin)' },
+    { value: 8, label: 'Octal (oct)' },
+    { value: 10, label: 'Decimal (dec)' },
+    { value: 16, label: 'Hexadecimal (hex)' },
 ];
 const DEFAULT_SETTINGS = { length: 4, base: 10 };
 const createOption = (value, label) => createElement('option', { text: label, attributes: { value: String(value) } });
@@ -27,7 +27,7 @@ export const createSettingsScreen = (onStart) => {
     });
     const updateSecretsInfo = () => {
         const { length, base } = readSettings();
-        secretsInfo.textContent = `Возможных секретов: ${countPossibleSecrets(length, base)}`;
+        secretsInfo.textContent = `Possible secrets: ${countPossibleSecrets(length, base)}`;
     };
     const applyBase = (preferredLength) => {
         fillLengthSelect(lengthSelect, Number(baseSelect.value), preferredLength);
@@ -40,10 +40,10 @@ export const createSettingsScreen = (onStart) => {
     const form = createElement('form', {
         className: 'form',
         children: [
-            createField('Система счисления', baseSelect),
-            createField('Длина секрета', lengthSelect),
+            createField('Number system', baseSelect),
+            createField('Secret length', lengthSelect),
             secretsInfo,
-            createElement('button', { text: 'Начать игру', attributes: { type: 'submit' } }),
+            createElement('button', { text: 'Start game', attributes: { type: 'submit' } }),
         ],
     });
     form.addEventListener('submit', (event) => {
@@ -52,7 +52,7 @@ export const createSettingsScreen = (onStart) => {
     });
     return createElement('section', {
         className: 'screen',
-        children: [createElement('h1', { text: 'Быки и коровы' }), form],
+        children: [createElement('h1', { text: 'Bulls and Cows' }), form],
     });
 };
 //# sourceMappingURL=settings-screen.js.map

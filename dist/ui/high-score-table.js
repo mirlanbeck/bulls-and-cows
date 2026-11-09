@@ -1,6 +1,6 @@
 import { createElement } from './create-element.js';
 import { formatTime } from './format-time.js';
-const COLUMN_TITLES = ['#', 'Попытки', 'Время', 'Настройки'];
+const COLUMN_TITLES = ['#', 'Attempts', 'Time', 'Settings'];
 const BASE_NAMES = {
     2: 'bin',
     8: 'oct',
@@ -39,9 +39,9 @@ const createTable = (scores) => createElement('table', {
 export const createHighScoreTable = (scores) => createElement('section', {
     className: 'screen',
     children: [
-        createElement('h2', { text: 'Рекорды' }),
+        createElement('h2', { text: 'High scores' }),
         scores.length === 0
-            ? createElement('p', { className: 'hint', text: 'Рекордов пока нет' })
+            ? createElement('p', { className: 'hint', text: 'No high scores yet' })
             : createTable(scores),
     ],
 });
