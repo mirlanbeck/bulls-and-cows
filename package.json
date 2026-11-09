@@ -7,7 +7,8 @@
     "build": "tsc",
     "lint": "eslint .",
     "format": "prettier --write .",
-    "test": "vitest run --passWithNoTests"
+    "test": "vitest run --passWithNoTests",
+    "prepare": "husky"
   },
   "repository": {
     "type": "git",
@@ -27,9 +28,18 @@
     "eslint": "^10.14.0",
     "eslint-config-prettier": "^10.1.8",
     "globals": "^17.14.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.6.0",
     "prettier": "^3.9.10",
     "typescript": "~6.0",
     "typescript-eslint": "^8.72.1",
     "vitest": "^5.1.0"
+  },
+  "lint-staged": {
+    "*.{ts,js}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,html,css}": "prettier --write"
   }
 }
