@@ -15,7 +15,7 @@ interface GameScreenOptions {
 }
 
 const createHistoryItem = ({ guess, bulls, cows }: HistoryEntry): HTMLLIElement =>
-  createElement('li', { text: `${guess} — быки: ${bulls}, коровы: ${cows}` });
+  createElement('li', { text: `${guess} — bulls: ${bulls}, cows: ${cows}` });
 
 export const createGameScreen = ({
   settings,
@@ -32,24 +32,24 @@ export const createGameScreen = ({
       name: 'guess',
       maxlength: String(length),
       autocomplete: 'off',
-      'aria-label': 'Ваша догадка',
+      'aria-label': 'Your guess',
     },
   });
   const guessButton = createElement('button', {
-    text: 'Проверить',
+    text: 'Check',
     attributes: { type: 'submit' },
   });
   const message = createElement('p', { className: 'hint', attributes: { role: 'status' } });
   const history = createElement('ol', { className: 'history' });
   const newGameButton = createElement('button', {
-    text: 'Новая игра',
+    text: 'New game',
     attributes: { type: 'button' },
   });
 
   const finishGame = (score: HighScore): void => {
     input.disabled = true;
     guessButton.disabled = true;
-    message.textContent = `Победа! Попыток: ${score.attempts}, время: ${formatTime(score.timeMs)}`;
+    message.textContent = `You won! Attempts: ${score.attempts}, time: ${formatTime(score.timeMs)}`;
     onWin(score);
   };
 
@@ -58,8 +58,8 @@ export const createGameScreen = ({
 
     if (next === state) {
       message.textContent = isValidGuess(input.value, length, base)
-        ? 'Такая догадка уже была'
-        : `Нужно ввести ${length} разных цифр`;
+        ? 'You have already tried this guess'
+        : `Enter ${length} different digits`;
       return;
     }
 
@@ -93,11 +93,11 @@ export const createGameScreen = ({
     children: [
       createElement('header', {
         className: 'screen-header',
-        children: [createElement('h1', { text: 'Быки и коровы' }), newGameButton],
+        children: [createElement('h1', { text: 'Bulls and Cows' }), newGameButton],
       }),
       createElement('p', {
         className: 'hint',
-        text: `Основание: ${base}, длина секрета: ${length}`,
+        text: `Base: ${base}, secret length: ${length}`,
       }),
       form,
       message,

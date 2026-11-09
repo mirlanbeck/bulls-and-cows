@@ -2,7 +2,7 @@ import type { HighScore } from '../core/high-scores.js';
 import { createElement } from './create-element.js';
 import { formatTime } from './format-time.js';
 
-const COLUMN_TITLES = ['#', 'Попытки', 'Время', 'Настройки'];
+const COLUMN_TITLES = ['#', 'Attempts', 'Time', 'Settings'];
 
 const BASE_NAMES: Readonly<Record<number, string>> = {
   2: 'bin',
@@ -53,9 +53,9 @@ export const createHighScoreTable = (scores: readonly HighScore[]): HTMLElement 
   createElement('section', {
     className: 'screen',
     children: [
-      createElement('h2', { text: 'Рекорды' }),
+      createElement('h2', { text: 'High scores' }),
       scores.length === 0
-        ? createElement('p', { className: 'hint', text: 'Рекордов пока нет' })
+        ? createElement('p', { className: 'hint', text: 'No high scores yet' })
         : createTable(scores),
     ],
   });

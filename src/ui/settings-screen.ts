@@ -4,10 +4,10 @@ import type { GameSettings } from '../core/game-state.js';
 import { createElement } from './create-element.js';
 
 const BASE_OPTIONS = [
-  { value: 2, label: 'Двоичная (bin)' },
-  { value: 8, label: 'Восьмеричная (oct)' },
-  { value: 10, label: 'Десятичная (dec)' },
-  { value: 16, label: 'Шестнадцатеричная (hex)' },
+  { value: 2, label: 'Binary (bin)' },
+  { value: 8, label: 'Octal (oct)' },
+  { value: 10, label: 'Decimal (dec)' },
+  { value: 16, label: 'Hexadecimal (hex)' },
 ] as const;
 
 const DEFAULT_SETTINGS: GameSettings = { length: 4, base: 10 };
@@ -44,7 +44,7 @@ export const createSettingsScreen = (onStart: (settings: GameSettings) => void):
 
   const updateSecretsInfo = (): void => {
     const { length, base } = readSettings();
-    secretsInfo.textContent = `Возможных секретов: ${countPossibleSecrets(length, base)}`;
+    secretsInfo.textContent = `Possible secrets: ${countPossibleSecrets(length, base)}`;
   };
 
   const applyBase = (preferredLength: number): void => {
@@ -61,10 +61,10 @@ export const createSettingsScreen = (onStart: (settings: GameSettings) => void):
   const form = createElement('form', {
     className: 'form',
     children: [
-      createField('Система счисления', baseSelect),
-      createField('Длина секрета', lengthSelect),
+      createField('Number system', baseSelect),
+      createField('Secret length', lengthSelect),
       secretsInfo,
-      createElement('button', { text: 'Начать игру', attributes: { type: 'submit' } }),
+      createElement('button', { text: 'Start game', attributes: { type: 'submit' } }),
     ],
   });
 
@@ -75,6 +75,6 @@ export const createSettingsScreen = (onStart: (settings: GameSettings) => void):
 
   return createElement('section', {
     className: 'screen',
-    children: [createElement('h1', { text: 'Быки и коровы' }), form],
+    children: [createElement('h1', { text: 'Bulls and Cows' }), form],
   });
 };
